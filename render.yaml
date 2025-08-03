@@ -1,0 +1,6 @@
+services:
+  - type: worker
+    name: telegram-avatar-bot
+    runtime: python
+    buildCommand: ""
+    startCommand: "python avatar.py"
