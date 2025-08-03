@@ -1,34 +1,31 @@
 import asyncio
+import os
 from telethon import TelegramClient, functions
 from telethon.tl.functions.photos import DeletePhotosRequest
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime, timedelta
 
-# Вставьте свои ключи из my.telegram.org
-api_id       = 26401759
-api_hash     = 'c1a8c2c73c495004e9c1ccc5845b743f'
+# Читаем переменные окружения
+api_id = int(os.getenv("API_ID"))
+api_hash = os.getenv("API_HASH")
+bot_token = os.getenv("BOT_TOKEN")
 session_name = 'session_dyn_avatar'
 
 # Настройки картинки
-img_size   = (400, 400)
-bg_color   = (240, 240, 240)     # фон ты можешь изменить здесь
+img_size = (400, 400)
+bg_color = (240, 240, 240)
 text_color = (0, 0, 0)
-
-# Попробуем более "модный" шрифт — Consolas
-font_path  = 'C:\\Windows\\Fonts\\consola.ttf'  # убедись, что он есть (или замени)
-font_size  = 100
+font_path = '/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'  # шрифт, доступный в Linux на Render
+font_size = 100
 
 async def update_avatar(client):
-    # Удаляем старые аватары
     photos = await client.get_profile_photos('me')
     if photos:
         await client(DeletePhotosRequest(photos))
 
-    # Время через 3 секунды (немного заранее)
     target_time = datetime.now() + timedelta(seconds=3)
     now_text = target_time.strftime('%H:%M')
 
-    # Создаём изображение
     img = Image.new('RGB', img_size, bg_color)
     draw = ImageDraw.Draw(img)
     font = ImageFont.truetype(font_path, font_size)
@@ -46,7 +43,7 @@ async def update_avatar(client):
 
 async def main():
     client = TelegramClient(session_name, api_id, api_hash)
-    await client.start()
+    await client.start(bot_token=bot_token)
 
     while True:
         try:
