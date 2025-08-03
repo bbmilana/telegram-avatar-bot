@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 api_id = int(os.getenv("API_ID"))
 api_hash = os.getenv("API_HASH")
 bot_token = os.getenv("BOT_TOKEN")
-session_name = 'session_dyn_avatar'
+session_name = 'session_d_avatar'
 
 # Настройки картинки
 img_size = (400, 400)
